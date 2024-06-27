@@ -31,7 +31,7 @@
             <div class="background-gradient">
                 <div class="w-100 bg-white py-8 px-5 sm:px-8 card-custom">
                     <div class="text-center mb-5">
-                        <img src="assets/logo.jpg" alt="Image" height="100" class="mt-5 mb-4">
+                        <img src="assets/logo.png" alt="Image" height="100" class="mt-5 mb-4">
                         <div class="text-dark display-6 mb-3">Bienvenid@ a Cevichería La Chinita!</div>
                         <span class="text-muted">Iniciar sesión para continuar</span>
                     </div>
