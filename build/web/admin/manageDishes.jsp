@@ -214,7 +214,7 @@
                 tr.append('<td><img src="' + platillo.imagenUrl + '"></td>');
                 tr.append('<td>' + platillo.categoriaId + '</td>');
                 tr.append('<td><button class="btn btn-primary btn-sm editBtn" data-id="' + platillo.id + '"><i class="fas fa-pencil-alt"></i></button></td>');
-                tr.append('<td><button class="btn btn-danger btn-sm deleteBtn" ><i class="fas fa-trash-alt"></i></button></td>');
+                tr.append('<td><button class="btn btn-danger btn-sm deleteBtn"  data-id="' + platillo.id + '" ><i class="fas fa-trash-alt"></i></button></td>');
                 tbody.append(tr);
             });
 

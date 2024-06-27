@@ -30,15 +30,7 @@ import org.json.JSONObject;
 public class CategoriaController extends HttpServlet {
     
     String vista = "admin/manageCategories.jsp";
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -55,6 +47,9 @@ public class CategoriaController extends HttpServlet {
             out.println("</html>");
         }
     }
+    
+    
+    
      @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Categoria> categorias = new ArrayList<>();
@@ -88,6 +83,67 @@ public class CategoriaController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(jsonArray.toString());
     }
+    
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if (action != null && action.equals("create")) {
+            createCategoria(request, response);
+            }
+            else if (action != null && action.equals("update")) {
+            editarCategoria(request, response);
+        } 
+        else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
+        }
+    }
+    
+    private void createCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nombre = request.getParameter("Nombre");
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "INSERT INTO categoria (Nombre) VALUES (?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, nombre);
+            
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                response.setStatus(HttpServletResponse.SC_CREATED);
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ServletException("Error en la base de datos", e);
+        }
+    }
+    
+    private void editarCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("Id"));
+        String nombre = request.getParameter("Nombre");
+        
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "UPDATE categoria SET Nombre = ? WHERE Id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, nombre);
+            statement.setInt(2, id);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ServletException("Error en la base de datos", e);
+        }
+    }
+    
+    
+    
     
 
     

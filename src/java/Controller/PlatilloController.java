@@ -120,12 +120,6 @@ public class PlatilloController extends HttpServlet {
         String nombre = request.getParameter("Nombre");
         String imagenUrl = request.getParameter("imagenUrl");
         int categoriaId = Integer.parseInt(request.getParameter("CategoriaId"));
-        
-         System.out.println("ID recibido: " + id);
-    System.out.println("Nombre recibido: " + nombre);
-    System.out.println("Imagen URL recibida: " + imagenUrl);
-    System.out.println("Categoria ID recibido: " + categoriaId);
-
 
         try (Connection connection = DatabaseConnection.getConnection()) {
             String sql = "UPDATE platillo SET Nombre = ?, imagenUrl = ?, CategoriaId = ? WHERE Id = ?";

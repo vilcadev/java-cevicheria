@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionar Categorías Platillos</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -15,9 +15,9 @@
     <div class="container mt-4">
         <h1 class="mb-4">Gestionar Categorías Platillos</h1>
         <div class="mb-3">
-            <button class="btn btn-success" data-toggle="modal" data-target="#addCategoryModal">Agregar Categoría</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#addCategoryModalLabel">Agregar Categoría</button>
         </div>
-        <table id="platillosTable" class="table table-bordered">
+        <table id="categoriaTable" class="table table-bordered">
             <thead class="thead-light">
                 <tr>
                     <th>
@@ -31,33 +31,8 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Filas de ejemplo -->
-                <tr>
-                    <td>Ejemplo Platillo 1</td>
-                    <td><button class="btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></button></td>
-                    <td><button class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Ejemplo Platillo 2</td>
-                    <td><button class="btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></button></td>
-                    <td><button class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Ejemplo Platillo 3</td>
-                    <td><button class="btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></button></td>
-                    <td><button class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Ejemplo Platillo 4</td>
-                    <td><button class="btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></button></td>
-                    <td><button class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Ejemplo Platillo 5</td>
-                    <td><button class="btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></button></td>
-                    <td><button class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-            </tbody>
+
+        </tbody>
         </table>
 
         <!-- Paginación -->
@@ -77,55 +52,58 @@
     </div>
 
     <!-- Modal Agregar Categoría -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCategoryModalLabel">Nueva Categoría</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="categoryName">Nombre:</label>
-                            <input type="text" class="form-control" id="categoryName">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Agregar Categoría</button>
-                </div>
+    <div class="modal fade" id="addCategoryModalLabel" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Nueva Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addCategoriaForm">
+                    <div class="form-group">
+                        <label for="platilloName">Nombre:</label>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="addCategoriaBtn">Agregar Categoria</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal Editar Platillo -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Editar Platillo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="editPlatilloName">Nombre:</label>
-                            <input type="text" class="form-control" id="editPlatilloName">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Guardar</button>
-                </div>
+   <!-- Modal Editar Platillo -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editCategoriaForm">
+                    <input type="hidden" id="editPlatilloId" name="Id">
+                    <div class="form-group">
+                        <label for="editPlatilloName">Nombre:</label>
+                        <input type="text" class="form-control" id="editPlatilloName" name="Nombre">
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveEditBtn">Guardar</button>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Modal Eliminar Platillo -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -145,161 +123,204 @@
         </div>
     </div>
 
+
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    
     <script>
-        $(document).ready(function() {
-            // Páginas de datos simulados (puedes cargar desde una fuente de datos real)
-            var dataPages = [
-                [
-                    { platillo: "Ejemplo Platillo 1" },
-                    { platillo: "Ejemplo Platillo 2" },
-                    { platillo: "Ejemplo Platillo 3" },
-                    { platillo: "Ejemplo Platillo 4" },
-                    { platillo: "Ejemplo Platillo 5" }
-                ],
-                [
-                    { platillo: "Ejemplo Platillo 6" },
-                    { platillo: "Ejemplo Platillo 7" },
-                    { platillo: "Ejemplo Platillo 8" },
-                    { platillo: "Ejemplo Platillo 9" },
-                    { platillo: "Ejemplo Platillo 10" }
-                ],
-                [
-                    { platillo: "Ejemplo Platillo 11" },
-                    { platillo: "Ejemplo Platillo 12" },
-                    { platillo: "Ejemplo Platillo 13" },
-                    { platillo: "Ejemplo Platillo 14" },
-                    { platillo: "Ejemplo Platillo 15" }
-                ]
-            ];
+    $(document).ready(function() {
+        var currentPage = 1;
+        var pageSize = 10;
+        var platillos = [];
 
-            var currentPage = 1;
-            var rowsPerPage = 5;
-            var totalPages = Math.ceil(dataPages.length);
-
-            // Función para mostrar los platillos en la tabla según la página actual
-            function showPlatillos(page) {
-                var startIndex = (page - 1) * rowsPerPage;
-                var endIndex = startIndex + rowsPerPage;
-                var platillos = dataPages[page - 1];
-
-                var tbody = $('#platillosTable tbody');
-                tbody.empty();
-
-                $.each(platillos, function(index, platillo) {
-                    var tr = $('<tr>');
-                    tr.append('<td>' + platillo.platillo + '</td>');
-                    tr.append('<td><button class="btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></button></td>');
-                    tr.append('<td><button class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash-alt"></i></button></td>');
-                    tbody.append(tr);
-                });
-            }
-
-            // Mostrar la primera página al cargar la página
-            showPlatillos(currentPage);
-
-            // Función para actualizar la paginación
-            function updatePagination() {
-                $('#pagination .page-item').removeClass('active');
-                $('#pagination .page-item').removeClass('disabled');
-
-                if (currentPage === 1) {
-                    $('#prevPage').addClass('disabled');
-                }
-
-                if (currentPage === totalPages) {
-                    $('#nextPage').addClass('disabled');
-                }
-
-                $('#pagination').find('[data-page="' + currentPage + '"]').parent().addClass('active');
-            }
-
-            // Evento de click para cambiar de página
-            $('#pagination .page-link').on('click', function(e) {
-                e.preventDefault();
-                var page = parseInt($(this).attr('data-page'));
-                if (page !== currentPage && page >= 1 && page <= totalPages) {
-                    currentPage = page;
-                    showPlatillos(currentPage);
-                    updatePagination();
-                }
-            });
-
-            // Evento de click para página anterior
-            $('#prevPage').on('click', function(e) {
-                e.preventDefault();
-                if (currentPage > 1) {
-                    currentPage--;
-                    showPlatillos(currentPage);
-                    updatePagination();
-                }
-            });
-
-            // Evento de click para página siguiente
-            $('#nextPage').on('click', function(e) {
-                e.preventDefault();
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    showPlatillos(currentPage);
-                    updatePagination();
-                }
-            });
-
-            // Lógica para ordenar la tabla
-            function sortTable(n) {
-                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-                table = document.getElementById("platillosTable");
-                switching = true;
-                dir = "asc";
-                while (switching) {
-                    switching = false;
-                    rows = table.rows;
-                    for (i = 1; i < (rows.length - 1); i++) {
-                        shouldSwitch = false;
-                        x = rows[i].getElementsByTagName("TD")[n];
-                        y = rows[i + 1].getElementsByTagName("TD")[n];
-                        if (dir == "asc") {
-                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                                shouldSwitch = true;
-                                break;
-                            }
-                        } else if (dir == "desc") {
-                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                                shouldSwitch = true;
-                                break;
-                            }
-                        }
+        // Función para cargar categorías desde el servidor
+        function loadCategorias(selectElement, selectedCategoriaId) {
+            $.ajax({
+                url: '../listarCategorias', // Asegúrate de que esta URL sea correcta
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var categoriaSelect = selectElement || $('#editPlatilloCategory');
+                    categoriaSelect.empty();
+                    $.each(data, function(index, categoria) {
+                        categoriaSelect.append($('<option>', {
+                            value: categoria.id,
+                            text: categoria.nombre
+                        }));
+                    });
+                    if (selectedCategoriaId) {
+                        categoriaSelect.val(selectedCategoriaId);
                     }
-                    if (shouldSwitch) {
-                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                        switching = true;
-                        switchcount++;
-                    } else {
-                        if (switchcount == 0 && dir == "asc") {
-                            dir = "desc";
-                            switching = true;
-                        }
-                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar las categorías:', error);
                 }
-            }
+            });
+        }
 
-            // Configurar modal de edición
-            function setEditModalData(name) {
-                $('#editPlatilloName').val(name);
-            }
+        // Cargar categorías cuando se abre el modal de agregar
+        $('#addDisheModal').on('show.bs.modal', function() {
+            loadCategorias($('#CategoriaId'));
+        });
 
-            // Evento para abrir modal de edición
-            $('#platillosTable').on('click', '.editBtn', function() {
-                var platilloName = $(this).closest('tr').find('td:first').text();
-                setEditModalData(platilloName);
-                $('#editModal').modal('show');
+        // Función para cargar platillos desde el servidor
+        function loadCategorias() {
+            $.ajax({
+                url: '../listarCategorias', // Asegúrate de que esta URL sea correcta
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    categorias = data;
+                    showPage(currentPage);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar los platillos:', error);
+                }
+            });
+        }
+
+        // Función para mostrar una página específica
+        function showPage(page) {
+            var start = (page - 1) * pageSize;
+            var end = start + pageSize;
+            var pageCategorias = categorias.slice(start, end);
+
+            var tbody = $('#categoriaTable tbody');
+            tbody.empty();
+
+            $.each(pageCategorias, function(index, categoria) {
+                var tr = $('<tr>');
+                tr.append('<td>' + categoria.nombre + '</td>');
+                tr.append('<td><button class="btn btn-primary btn-sm editBtn" data-id="' + categoria.id + '"><i class="fas fa-pencil-alt"></i></button></td>');
+                tr.append('<td><button class="btn btn-danger btn-sm deleteBtn" ><i class="fas fa-trash-alt"></i></button></td>');
+                tbody.append(tr);
             });
 
-            // Evento para abrir modal de eliminación
-            $('#platillosTable').on('click', '.deleteBtn', function() {
-                $('#deleteModal').modal('show');
+            updatePagination(page);
+        }
+
+        // Función para actualizar la paginación
+        function updatePagination(page) {
+            currentPage = page;
+            var totalPages = Math.ceil(platillos.length / pageSize);
+
+            $('#pagination .page-item').removeClass('active');
+            $('#pagination .page-item[data-page="' + page + '"]').addClass('active');
+
+            if (page <= 1) {
+                $('#prevPage').addClass('disabled');
+            } else {
+                $('#prevPage').removeClass('disabled');
+            }
+
+            if (page >= totalPages) {
+                $('#nextPage').addClass('disabled');
+            } else {
+                $('#nextPage').removeClass('disabled');
+            }
+
+            // Actualizar los botones de página
+            var paginationItems = $('#pagination .page-item').not('#prevPage, #nextPage');
+            paginationItems.remove();
+
+            for (var i = 1; i <= totalPages; i++) {
+                var pageItem = $('<li class="page-item" data-page="' + i + '"><a class="page-link" href="#">' + i + '</a></li>');
+                $('#nextPage').before(pageItem);
+            }
+        }
+
+        // Eventos de paginación
+        $('#pagination').on('click', '.page-link', function(e) {
+            e.preventDefault();
+            var page = $(this).parent().data('page');
+            if (page && page !== currentPage) {
+                showPage(page);
+            }
+        });
+
+        // Cargar los platillos cuando se carga la página
+        loadCategorias();
+
+        // Agregar Platillo
+        $('#addCategoriaBtn').click(function() {
+            var formData = $('#addCategoriaForm').serialize();
+            formData += '&action=create';
+            $.ajax({
+                url: '../listarCategorias',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#addCategoryModalLabel').modal('hide');
+                    loadCategorias();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al agregar la categoria:', error);
+                }
             });
         });
-    </script>
+
+        // Configurar modal de edición
+        function setEditModalData(id, nombre) {
+            $('#editPlatilloId').val(id);
+            $('#editPlatilloName').val(nombre);
+        }
+
+        // Evento para abrir modal de edición
+        $('#categoriaTable').on('click', '.editBtn', function() {
+            var categoriaId = $(this).data('id');
+            var categoria = categorias.find(p => p.id === categoriaId);
+            if (categoria) {
+                
+                
+                setEditModalData(categoria.id, categoria.nombre);
+                loadCategorias($('#editPlatilloCategory'), categoria.categoriaId); // Cargar categorías en el select de edición y seleccionar la categoría correcta
+                $('#editModal').modal('show');
+            }
+        });
+
+        // Evento para guardar los cambios de edición
+        $('#saveEditBtn').on('click', function() {
+            var formData = $('#editCategoriaForm').serialize();
+            formData += '&action=update';
+
+            $.ajax({
+                url: '../listarCategorias',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    $('#editModal').modal('hide');
+                    loadCategorias();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al actualizar el platillo:', error);
+                }
+            });
+        });
+
+         // Evento para abrir modal de eliminación
+    $('#platillosTable').on('click', '.deleteBtn', function() {
+        var platilloId = $(this).data('id');
+        $('#confirmDeleteBtn').data('id', platilloId); // Guardar el id en el botón de confirmación
+        $('#deleteModal').modal('show');
+    });
+    
+      // Evento para confirmar la eliminación
+    $('#confirmDeleteBtn').on('click', function() {
+        var platilloId = $(this).data('id');
+        $.ajax({
+            url: '../listarPlatillos',
+            method: 'POST',
+            data: { Id: platilloId, action: 'delete' },
+            success: function(response) {
+                $('#deleteModal').modal('hide');
+                loadPlatillos();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al eliminar el platillo:', error);
+            }
+        });
+    });
+    });
+</script>
+    
 </body>
 </html>
