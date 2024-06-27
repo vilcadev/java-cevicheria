@@ -4,17 +4,29 @@
  */
 package Controller;
 
+import Data.DatabaseConnection;
+import Models.Categoria;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author Omar
  */
+@WebServlet("/listarCategorias")
 public class CategoriaController extends HttpServlet {
     
     String vista = "admin/manageCategories.jsp";
@@ -43,17 +55,40 @@ public class CategoriaController extends HttpServlet {
             out.println("</html>");
         }
     }
-    
-    protected void doGet (HttpServletRequest request, HttpServletResponse response)
-                throws ServletException, IOException {
-        String acceso = "";
-        String action = request.getParameter("accion");
-        
-    
-        
-        
+     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Categoria> categorias = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "SELECT * FROM categoria";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Categoria categoria = new Categoria();
+                categoria.setId(resultSet.getInt("Id"));
+                categoria.setNombre(resultSet.getString("Nombre"));
+                categorias.add(categoria);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ServletException("Error en la base de datos", e);
+        }
+
+        // Convertir la lista de categorías a JSON
+        JSONArray jsonArray = new JSONArray();
+        for (Categoria categoria : categorias) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", categoria.getId());
+            jsonObject.put("nombre", categoria.getNombre());
+            jsonArray.put(jsonObject);
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jsonArray.toString());
     }
-
     
 
+    
 }
