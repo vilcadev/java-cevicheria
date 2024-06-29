@@ -14,6 +14,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/6c5d2463b9.js" crossorigin="anonymous"></script>
+     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -105,9 +107,54 @@
         }
         
         .footer {
-            margin-top: 180px;
+            margin-top: 380px;
         }
 
+        
+       
+        .nav-link {
+            color: #5a67d8;
+        }
+        .tab-content {
+            padding: 20px;
+        }
+        
+        
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item img {
+    display: block;
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.price {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.name {
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 0;
+}
 
     </style>
 </head>
@@ -199,12 +246,100 @@
             </div>
 
             <div class="col-md-4">
-                <p>ACÁ AÑADEN LO QUE FALTA XD</p>
+                <div class="container mt-5">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="productos-tab" data-toggle="tab" href="#productos" role="tab" aria-controls="productos" aria-selected="true">
+                <i class="fas fa-box"></i> Productos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pagos-tab" data-toggle="tab" href="#pagos" role="tab" aria-controls="pagos" aria-selected="false">
+                <i class="fas fa-money-bill"></i> Pagos
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="productos" role="tabpanel" aria-labelledby="productos-tab">
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <button class="btn btn-primary mb-3">Todos</button>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="06/27/2024" aria-label="Date">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="menu">
+                            <div class="item">
+                                <div class="price">S/ 25</div>
+                                <img src="https://www.elespectador.com/resizer/tyGJPN_YmWpagQFeXq_YYOxAKjY=/arc-anglerfish-arc2-prod-elespectador/public/2AVD5Z6Y2ZFWHETPQGCPLMNK4A.jpg" alt="ceviche">
+                                <div class="name">ceviche</div>
+                            </div>
+                            <div class="item">
+                                <div class="price">S/ 25</div>
+                                <img src="https://buenazo.cronosmedia.glr.pe/original/2021/09/16/6143e231d4bfcf3c4448e32e.jpg" alt="arroz chaufa">
+                                <div class="name">Chaufa de mariscos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pagos" role="tabpanel" aria-labelledby="pagos-tab">
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <label for="info">Información</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Enviar a..." aria-label="Enviar a">
+                    </div>
+                    <label for="boleta">Boleta</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" placeholder="Cliente" aria-label="Cliente">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" placeholder="DNI" aria-label="DNI">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="total">Total</label>
+                        <p style="text-align: right;"><b>Total: S/50.00</b></p>
+                    </div>
+                    <button class="btn btn-danger btn-block">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </div>
 
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
         function toggleSidebar() {
