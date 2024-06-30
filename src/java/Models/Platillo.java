@@ -14,6 +14,7 @@ public class Platillo {
     private int categoriaId;
     private String nombre;
     private String imagenUrl;
+    private String nombreCategoria;
 
     // Getters y Setters
     public int getId() {
@@ -46,6 +47,14 @@ public class Platillo {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
+    }
+    
+     public String getNombreCategoria() {
+        return nombreCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
     
 }

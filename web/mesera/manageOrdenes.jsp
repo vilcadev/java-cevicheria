@@ -130,6 +130,7 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor:pointer;
 }
 
 .item img {
@@ -206,7 +207,6 @@
                                 <td>25.00</td>
                                 <td>
                                     <a href="#"><i class="fa-solid fa-trash" style="margin-right: 20px; color: red;"> </i></a>
-                                    <a href="#"><i class="fa-solid fa-pen-to-square" style="color: blue;"></i></a>
                                 </td>
                             </tr>
                             <tr>
@@ -215,7 +215,6 @@
                                 <td>25.00</td>
                                 <td>
                                     <a href="#"><i class="fa-solid fa-trash" style="margin-right: 20px; color: red;"> </i></a>
-                                    <a href="#"><i class="fa-solid fa-pen-to-square" style="color: blue;"></i></a>
                                 </td>
                             </tr>
                             
@@ -264,6 +263,7 @@
             <div class="row mt-3">
                 <div class="col-md-12">
                     <button class="btn btn-primary mb-3">Todos</button>
+                     <button class="btn btn-primary mb-3">Plato Principal</button>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
@@ -273,11 +273,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="06/27/2024" aria-label="Date">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="fas fa-calendar-alt"></i>
-                            </button>
+                                <input type="date" id="fecha" class="form-control">
                         </div>
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="button">
@@ -310,6 +307,9 @@
                         <div class="input-group-prepend">
                             <button class="btn btn-outline-secondary" type="button">
                                 <i class="fab fa-whatsapp"></i>
+                            </button>
+                             <button class="btn btn-outline-secondary" type="button">
+                                <i class="fa-solid fa-envelope"></i>
                             </button>
                         </div>
                         <input type="text" class="form-control" placeholder="Enviar a..." aria-label="Enviar a">

@@ -64,14 +64,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addPlatilloForm">
+                <form id="addPlatilloForm" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="platilloName">Nombre:</label>
                         <input type="text" class="form-control" id="Nombre" name="Nombre">
                     </div>
                     <div class="form-group">
                         <label for="platilloImageUrl">Imagen URL:</label>
-                        <input type="text" class="form-control" id="imagenUrl" name="imagenUrl">
+                        <input type="file" class="form-control" id="imagenUrl" name="imagenUrl">
                     </div>
                     <div class="form-group">
                         <label for="platilloCategory">Categoría:</label>
@@ -93,14 +93,14 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" >
                 <h5 class="modal-title" id="editModalLabel">Editar Platillo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="editPlatilloForm">
+                <form id="editPlatilloForm" enctype="multipart/form-data">
                     <input type="hidden" id="editPlatilloId" name="Id">
                     <div class="form-group">
                         <label for="editPlatilloName">Nombre:</label>
@@ -108,7 +108,8 @@
                     </div>
                     <div class="form-group">
                         <label for="editPlatilloImageUrl">Imagen URL:</label>
-                        <input type="text" class="form-control" id="editPlatilloImageUrl" name="imagenUrl">
+                         <img id="currentImage" src="" alt="Imagen actual" style="max-width: 200px; max-height: 200px;">
+    <input type="file" class="form-control" id="editImagenUrl" name="editImagenUrl">
                     </div>
                     <div class="form-group">
                         <label for="editPlatilloCategory">Categoría:</label>
@@ -212,7 +213,7 @@
                 var tr = $('<tr>');
                 tr.append('<td>' + platillo.nombre + '</td>');
                 tr.append('<td><img src="' + platillo.imagenUrl + '"></td>');
-                tr.append('<td>' + platillo.categoriaId + '</td>');
+                tr.append('<td>' + platillo.nombreCategoria + '</td>');
                 tr.append('<td><button class="btn btn-primary btn-sm editBtn" data-id="' + platillo.id + '"><i class="fas fa-pencil-alt"></i></button></td>');
                 tr.append('<td><button class="btn btn-danger btn-sm deleteBtn"  data-id="' + platillo.id + '" ><i class="fas fa-trash-alt"></i></button></td>');
                 tbody.append(tr);
@@ -264,32 +265,50 @@
         loadPlatillos();
 
         // Agregar Platillo
-        $('#addPlatilloBtn').click(function() {
-            var formData = $('#addPlatilloForm').serialize();
-            formData += '&action=create';
-            $.ajax({
-                url: '../listarPlatillos',
-                method: 'POST',
-                data: formData,
-                success: function(response) {
-                    $('#addDisheModal').modal('hide');
-                    loadPlatillos();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error al agregar el platillo:', error);
-                }
-            });
+$('#addPlatilloBtn').click(function() {
+    var form = $('#addPlatilloForm')[0];
+    var formData = new FormData(form);
+    formData.append('action', 'create');
+
+    var fileInput = document.getElementById('imagenUrl');
+    var file = fileInput.files[0];
+    var reader = new FileReader();
+
+    reader.onloadend = function() {
+        formData.append('imagenBase64', reader.result); // Agrega el resultado base64 al FormData
+        
+        $.ajax({
+            url: '../listarPlatillos',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('#addDisheModal').modal('hide');
+                loadPlatillos();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al agregar el platillo:', error);
+            }
         });
+    };
 
-        // Configurar modal de edición
-        function setEditModalData(id, nombre, imagenUrl, categoriaId) {
-            $('#editPlatilloId').val(id);
-            $('#editPlatilloName').val(nombre);
-            $('#editPlatilloImageUrl').val(imagenUrl);
-            $('#editPlatilloCategory').val(categoriaId);
-        }
+    if (file) {
+        reader.readAsDataURL(file); // Lee el archivo como base64
+    }
+});
 
-        // Evento para abrir modal de edición
+
+       // Configurar modal de edición
+function setEditModalData(id, nombre, imagenUrl, categoriaId) {
+    $('#editPlatilloId').val(id);
+    $('#editPlatilloName').val(nombre);
+    // No establecer directamente el valor del campo de archivo
+    // $('#editPlatilloImageUrl').val(imagenUrl);
+    $('#editPlatilloCategory').val(categoriaId);
+}
+
+       // Evento para abrir modal de edición
         $('#platillosTable').on('click', '.editBtn', function() {
             var platilloId = $(this).data('id');
             var platillo = platillos.find(p => p.id === platilloId);
@@ -298,28 +317,62 @@
                 var imagenUrl = $(this).closest('tr').find('img').attr('src');
                 setEditModalData(platillo.id, platillo.nombre, imagenUrl, platillo.categoriaId);
                 loadCategorias($('#editPlatilloCategory'), platillo.categoriaId); // Cargar categorías en el select de edición y seleccionar la categoría correcta
+
+                // Mostrar la imagen actual en el modal
+                $('#currentImage').attr('src', imagenUrl);
+
                 $('#editModal').modal('show');
             }
         });
-
-        // Evento para guardar los cambios de edición
-        $('#saveEditBtn').on('click', function() {
-            var formData = $('#editPlatilloForm').serialize();
-            formData += '&action=update';
-
-            $.ajax({
-                url: '../listarPlatillos',
-                method: 'POST',
-                data: formData,
-                success: function(response) {
-                    $('#editModal').modal('hide');
-                    loadPlatillos();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error al actualizar el platillo:', error);
+        
+        
+        
+                    // Evento para cambiar la imagen mostrada al seleccionar un nuevo archivo
+            $('#editImagenUrl').on('change', function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#currentImage').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
                 }
             });
+
+      $('#saveEditBtn').click(function() {
+            var form = $('#editPlatilloForm')[0];
+            var formData = new FormData(form);
+            formData.append('action', 'update');
+
+            var fileInput = document.getElementById('editImagenUrl');
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function() {
+                formData.append('imagenBase64', reader.result); // Agrega el resultado base64 al FormData
+
+                $.ajax({
+                    url: '../listarPlatillos',
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+
+                        $('#editMotal').modal('hide');
+                        loadPlatillos();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al agregar el platillo:', error);
+                    }
+                });
+            };
+
+            if (file) {
+                reader.readAsDataURL(file); // Lee el archivo como base64
+            }
         });
+
 
          // Evento para abrir modal de eliminación
     $('#platillosTable').on('click', '.deleteBtn', function() {

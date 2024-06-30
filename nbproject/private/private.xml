@@ -5,16 +5,24 @@
         <group>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Controller/Controller.java</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/admin/manageCategories.jsp</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Interfaces/IAzureBlobStorageService.java</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Controller/CategoriaController.java</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Controller/LoginServlet.java</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/admin/manageDishes.jsp</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Models/Platillo.java</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Data/DatabaseConnection.java</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/conf/MANIFEST.MF</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/mesera/mesas.jsp</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Controller/PlatilloController.java</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/mesera/manageOrdenes.jsp</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Services/AzureBlobStorageService.java</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/cocinero/manageOrders.jsp</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/admin/manageMenu.jsp</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Controller/MenuController.java</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/mesera/tables.jsp</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/src/java/Models/Categoria.java</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/build/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/META-INF/context.xml</file>
             <file>file:/C:/Users/user/Documents/cevicheriaSolucionesWeb/java-cevicheria/web/index.jsp</file>
         </group>
     </open-files>
