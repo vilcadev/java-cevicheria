@@ -94,6 +94,9 @@ public class CategoriaController extends HttpServlet {
             else if (action != null && action.equals("update")) {
             editarCategoria(request, response);
         } 
+            else if (action != null && action.equals("delete")) {
+            deleteCategoria(request, response);
+        } 
         else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
         }
@@ -132,6 +135,27 @@ public class CategoriaController extends HttpServlet {
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ServletException("Error en la base de datos", e);
+        }
+    }
+    
+    
+      private void deleteCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("Id"));
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "DELETE FROM categoria WHERE Id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            int rowsDeleted = statement.executeUpdate();
+            if (rowsDeleted > 0) {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);

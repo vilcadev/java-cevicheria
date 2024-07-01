@@ -10,13 +10,97 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
     img {
         width: 60px;
     }
+    
+    
+     .header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #dddddd;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+
+        .header .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .no-entry {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.2em;
+        }
+
+        .sidebar {
+            background-color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .sidebar-active {
+            left: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .sidebar-overlay-active {
+            display: block;
+        }
+
+        .navbar-nav .nav-link {
+            padding-left: 0;
+        } 
 </style>
 <body>
+    
+        <div class="header">
+        <nav class="navbar navbar-light">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand d-flex align-items-center ml-2">
+                <img src="../assets/logo.png" width="40" height="40" class="d-inline-block align-top" alt="" style="width:100%">
+                <span class="ml-2">Cevicheria La Chinita</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="text-center">
+            <img src="../assets/logo.png" alt="Logo" class="img-fluid" style="width:100%">
+            <div class="d-flex flex-column gap-3">
+            <a href="manageCategories.jsp"><button  type="button" class="btn btn-secondary btn-lg w-100 mt-5" onclick="toggleSidebar()">Categorias</button></a> 
+            <a href="manageMenu.jsp"><button type="button" class="btn btn-secondary btn-lg w-100 mt-3" onclick="toggleSidebar()">Menu</button></a> 
+            <a href="../index.jsp"><button class="btn btn-link mt-3" >Salir</button></a> 
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+    
+    
+    
 <div class="container mt-4">
     <h1 class="mb-4">Gestionar Platillos</h1>
     <div class="mb-3">
@@ -276,7 +360,8 @@ $('#addPlatilloBtn').click(function() {
 
     reader.onloadend = function() {
         formData.append('imagenBase64', reader.result); // Agrega el resultado base64 al FormData
-        
+        Swal.fire('Procesando');
+        Swal.showLoading();
         $.ajax({
             url: '../listarPlatillos',
             method: 'POST',
@@ -284,7 +369,13 @@ $('#addPlatilloBtn').click(function() {
             contentType: false,
             processData: false,
             success: function(response) {
+                Swal.close();
                 $('#addDisheModal').modal('hide');
+                   $('#addPlatilloForm')[0].reset(); // Limpiar el formulario de agregar
+                 Swal.fire({
+                    title: "Platillo Agregado Exitosamente!",
+                    icon: "success"
+                  });
                 loadPlatillos();
             },
             error: function(xhr, status, error) {
@@ -350,7 +441,8 @@ function setEditModalData(id, nombre, imagenUrl, categoriaId) {
 
             reader.onloadend = function() {
                 formData.append('imagenBase64', reader.result); // Agrega el resultado base64 al FormData
-
+                Swal.fire('Procesando');
+                Swal.showLoading();
                 $.ajax({
                     url: '../listarPlatillos',
                     method: 'POST',
@@ -358,8 +450,12 @@ function setEditModalData(id, nombre, imagenUrl, categoriaId) {
                     contentType: false,
                     processData: false,
                     success: function(response) {
-
+                        Swal.close();
                         $('#editMotal').modal('hide');
+                         Swal.fire({
+                    title: "Platillo Actualizado Exitosamente!",
+                    icon: "success"
+                  });
                         loadPlatillos();
                     },
                     error: function(xhr, status, error) {
@@ -384,12 +480,19 @@ function setEditModalData(id, nombre, imagenUrl, categoriaId) {
       // Evento para confirmar la eliminación
     $('#confirmDeleteBtn').on('click', function() {
         var platilloId = $(this).data('id');
+        Swal.fire('Procesando');
+                Swal.showLoading();
         $.ajax({
             url: '../listarPlatillos',
             method: 'POST',
             data: { Id: platilloId, action: 'delete' },
             success: function(response) {
+                Swal.close();
                 $('#deleteModal').modal('hide');
+                Swal.fire({
+                    title: "Platillo Eliminado Exitosamente!",
+                    icon: "success"
+                  });
                 loadPlatillos();
             },
             error: function(xhr, status, error) {
@@ -399,5 +502,20 @@ function setEditModalData(id, nombre, imagenUrl, categoriaId) {
     });
     });
 </script>
+
+ <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('sidebar-overlay');
+            if (sidebar.classList.contains('sidebar-active')) {
+                sidebar.classList.remove('sidebar-active');
+                overlay.classList.remove('sidebar-overlay-active');
+            } else {
+                sidebar.classList.add('sidebar-active');
+                overlay.classList.add('sidebar-overlay-active');
+            }
+        }
+    </script>
+
 </body>
 </html>

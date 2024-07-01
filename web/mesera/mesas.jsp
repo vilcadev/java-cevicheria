@@ -144,7 +144,7 @@
     <div class="sidebar" id="sidebar">
         <div class="text-center">
             <img src="../assets/logo.png" alt="Logo" class="img-fluid">
-            <button class="btn btn-link mt-3" onclick="toggleSidebar()">Salir</button>
+            <a href="../index.jsp"><button class="btn btn-link mt-3" >Salir</button></a> 
         </div>
     </div>
 
