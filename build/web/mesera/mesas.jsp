@@ -153,7 +153,7 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-3 mb-4">
-                <a href="#" style="text-decoration: none;">
+                <a href="manageOrdenes.jsp" style="text-decoration: none;">
                     <div class="card">
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h5 class="card-title">Mesa 1</h5>
@@ -163,7 +163,7 @@
             </div>
             <div class="col-md-3 mb-4">
 
-                <a href="#" style="text-decoration: none;">
+                <a  href="manageOrdenes.jsp" style="text-decoration: none;">
 
                     <div class="card-mesa2" style="color: black;">
 
@@ -178,7 +178,7 @@
 
             </div>
             <div class="col-md-3 mb-4">
-                <a href="#" style="text-decoration: none;">
+                <a  href="manageOrdenes.jsp"style="text-decoration: none;">
                     <div class="card-mesa3" style="color: black;">
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h5 class="card-title">Mesa 3</h5>
@@ -187,7 +187,7 @@
                 </a>
             </div>
             <div class="col-md-3 mb-4">
-                <a href="#" style="text-decoration: none;">
+                <a  href="manageOrdenes.jsp" style="text-decoration: none;">
                     <div class="card">
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h5 class="card-title">Mesa 4</h5>
@@ -196,7 +196,7 @@
                 </a>
             </div>
             <div class="col-md-3 mb-4">
-                <a href="#" style="text-decoration: none;">
+                <a  href="manageOrdenes.jsp" style="text-decoration: none;">
                     <div class="card">
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h5 class="card-title">Mesa 5</h5>
@@ -205,7 +205,7 @@
                 </a>
             </div>
             <div class="col-md-3 mb-4">
-                <a href="#" style="text-decoration: none;">
+                <a  href="manageOrdenes.jsp" style="text-decoration: none;">
                     <div class="card">
                         <div class="card-body d-flex align-items-center justify-content-center">
                             <h5 class="card-title">Mesa 6</h5>

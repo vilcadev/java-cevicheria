@@ -249,7 +249,7 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="productos-tab" data-toggle="tab" href="#productos" role="tab" aria-controls="productos" aria-selected="true">
-                <i class="fas fa-box"></i> Productos
+                <i class="fas fa-box"></i> Platillos
             </a>
         </li>
         <li class="nav-item">
