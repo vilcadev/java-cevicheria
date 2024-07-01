@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
                 } else if ("COCINERO".equals(rol)) {
                     response.sendRedirect("cocinero/manageOrders.jsp");
                 } else if ("MESERA".equals(rol)) {
-                    response.sendRedirect("mesera/tables.jsp");
+                    response.sendRedirect("mesera/mesas.jsp");
                 } else {
                     response.sendRedirect("error.jsp"); // Redirigir a una página de error si el rol no está definido
                 }
