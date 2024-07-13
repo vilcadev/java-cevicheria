@@ -2,20 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Interfaces;
+package DAO;
 
+import Interfaces.CRUD;
+import Models.Platillo;
 import java.util.LinkedList;
 
 /**
  *
  * @author user
  */
-public interface CRUD<T> {
-    
-    void limpiar(); 
-    T ver(int id);
-    LinkedList<T> listar();
-    void crear(T obj);
-    void eliminar(int id);
-    void editar(T obj);
+public interface PlatilloDAO extends CRUD<Platillo>{
+     
 }

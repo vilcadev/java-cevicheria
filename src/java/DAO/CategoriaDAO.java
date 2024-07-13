@@ -2,12 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Models;
+package DAO;
+
+import Interfaces.CRUD;
+import Models.Categoria;
 
 /**
  *
  * @author user
  */
-public class CategoriaDAO {
+public interface CategoriaDAO extends CRUD<Categoria>{
+    
+    
     
 }

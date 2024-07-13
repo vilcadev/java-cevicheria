@@ -4,6 +4,9 @@
  */
 package Controller;
 
+
+import DAO.PlatilloDAO;
+import DAOImpl.PlatilloDAOImpl;
 import Data.DatabaseConnection;
 
 import Models.Platillo;
@@ -16,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -35,39 +39,15 @@ import org.json.JSONObject;
 @MultipartConfig
 public class PlatilloController extends HttpServlet {
     
-    
+     private final PlatilloDAO platilloDAO = new PlatilloDAOImpl();
 
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Platillo> platillos = new ArrayList<>();
+     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LinkedList<Platillo> platillos = platilloDAO.listar();
 
-        try 
-            (Connection connection = DatabaseConnection.getConnection())
-        {
-            String sql = "SELECT p.Id, p.Nombre, p.imagenUrl, p.CategoriaId, c.Nombre AS NombreCategoria " +
-                     "FROM platillo p " +
-                     "JOIN categoria c ON p.CategoriaId = c.Id";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Platillo platillo = new Platillo();
-                platillo.setId(resultSet.getInt("Id"));
-                platillo.setCategoriaId(resultSet.getInt("CategoriaId"));
-                platillo.setNombre(resultSet.getString("Nombre"));
-                platillo.setImagenUrl(resultSet.getString("imagenUrl"));
-                platillo.setNombreCategoria(resultSet.getString("NombreCategoria")); // Nuevo campo para el nombre de la categoría
-                platillos.add(platillo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
-
-      // Configura la respuesta HTTP
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        // Envía el JSON en la respuesta
         PrintWriter out = response.getWriter();
         JSONArray jsonArray = new JSONArray();
 
@@ -87,72 +67,36 @@ public class PlatilloController extends HttpServlet {
    
    
    
-     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        if (action != null && action.equals("create")) {
-            createPlatillos(request, response);
-        } else if (action != null && action.equals("update")) {
+        if ("create".equals(action)) {
+            createPlatillo(request, response);
+        } else if ("update".equals(action)) {
             updatePlatillo(request, response);
-        } else if (action != null && action.equals("delete")) {
+        } else if ("delete".equals(action)) {
             deletePlatillo(request, response);
-        }else {
+        } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
         }
     }
-     
-       private void createPlatillo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         
+       
+      private void createPlatillo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nombre = request.getParameter("Nombre");
-        String imagenUrl = request.getParameter("imagenUrl");
-        int categoriaId = Integer.parseInt(request.getParameter("CategoriaId"));
+        String categoriaId = request.getParameter("CategoriaId");
+        String imagenBase64 = request.getParameter("imagenBase64");
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO platillo (Nombre, imagenUrl, CategoriaId) VALUES (?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, nombre);
-            statement.setString(2, imagenUrl);
-            statement.setInt(3, categoriaId);
+        Platillo platillo = new Platillo();
+        platillo.setNombre(nombre);
+        platillo.setImagenUrl(imagenBase64);
+        platillo.setCategoriaId(Integer.parseInt(categoriaId));
 
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                response.setStatus(HttpServletResponse.SC_CREATED);
-            } else {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
+        platilloDAO.crear(platillo);
+        response.setStatus(HttpServletResponse.SC_CREATED);
     }
-       
-       
-      private void createPlatillos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String nombre = request.getParameter("Nombre");
-    String categoriaId = request.getParameter("CategoriaId");
-    String imagenBase64 = request.getParameter("imagenBase64");
 
-    // Aquí puedes decodificar la imagen base64 si es necesario y guardarla en tu base de datos
-    // Ejemplo de decodificación (si es necesario):
-    // byte[] imagenBytes = Base64.getDecoder().decode(imagenBase64);
-
-    try (Connection connection = DatabaseConnection.getConnection()) {
-        String sql = "INSERT INTO platillo (Nombre, imagenUrl, CategoriaId) VALUES (?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, nombre);
-        statement.setString(2, imagenBase64); // Guarda la imagen base64 en la base de datos
-        statement.setInt(3, Integer.parseInt(categoriaId));
-
-        int rowsInserted = statement.executeUpdate();
-        if (rowsInserted > 0) {
-            response.setStatus(HttpServletResponse.SC_CREATED);
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        throw new ServletException("Error en la base de datos", e);
-    }
-}
 
 
        
@@ -160,47 +104,23 @@ public class PlatilloController extends HttpServlet {
     private void updatePlatillo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("Id"));
         String nombre = request.getParameter("Nombre");
-          String imagenBase64 = request.getParameter("imagenBase64");
+        String imagenBase64 = request.getParameter("imagenBase64");
         int categoriaId = Integer.parseInt(request.getParameter("CategoriaId"));
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "UPDATE platillo SET Nombre = ?, imagenUrl = ?, CategoriaId = ? WHERE Id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, nombre);
-            statement.setString(2, imagenBase64);
-            statement.setInt(3, categoriaId);
-            statement.setInt(4, id);
+        Platillo platillo = new Platillo();
+        platillo.setId(id);
+        platillo.setNombre(nombre);
+        platillo.setImagenUrl(imagenBase64);
+        platillo.setCategoriaId(categoriaId);
 
-            int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated > 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-            } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
+        platilloDAO.editar(platillo);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
     
-    private void deletePlatillo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      private void deletePlatillo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("Id"));
-
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "DELETE FROM platillo WHERE Id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-
-            int rowsDeleted = statement.executeUpdate();
-            if (rowsDeleted > 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-            } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
+        platilloDAO.eliminar(id);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
    
   

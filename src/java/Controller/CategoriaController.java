@@ -4,6 +4,8 @@
  */
 package Controller;
 
+import DAO.CategoriaDAO;
+import DAOImpl.CategoriaDAOImpl;
 import Data.DatabaseConnection;
 import Models.Categoria;
 import java.io.IOException;
@@ -29,6 +31,8 @@ import org.json.JSONObject;
 @WebServlet("/listarCategorias")
 public class CategoriaController extends HttpServlet {
     
+      private final CategoriaDAO categoriaDAO = new CategoriaDAOImpl();
+    
     String vista = "admin/manageCategories.jsp";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -52,23 +56,7 @@ public class CategoriaController extends HttpServlet {
     
      @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Categoria> categorias = new ArrayList<>();
-
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM categoria";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Categoria categoria = new Categoria();
-                categoria.setId(resultSet.getInt("Id"));
-                categoria.setNombre(resultSet.getString("Nombre"));
-                categorias.add(categoria);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
+        List<Categoria> categorias = categoriaDAO.listar();
 
         // Convertir la lista de categorías a JSON
         JSONArray jsonArray = new JSONArray();
@@ -104,66 +92,34 @@ public class CategoriaController extends HttpServlet {
     
     private void createCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nombre = request.getParameter("Nombre");
+        Categoria categoria = new Categoria();
+        categoria.setNombre(nombre);
+        
+        categoriaDAO.crear(categoria);
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO categoria (Nombre) VALUES (?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, nombre);
-            
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                response.setStatus(HttpServletResponse.SC_CREATED);
-            } else {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
+        response.setStatus(HttpServletResponse.SC_CREATED);
     }
     
     private void editarCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("Id"));
-        String nombre = request.getParameter("Nombre");
-        
+               String nombre = request.getParameter("Nombre");
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "UPDATE categoria SET Nombre = ? WHERE Id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, nombre);
-            statement.setInt(2, id);
+               Categoria categoria = new Categoria();
+               categoria.setId(id);
+               categoria.setNombre(nombre);
 
-            int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated > 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-            } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
+               categoriaDAO.editar(categoria);
+
+               response.setStatus(HttpServletResponse.SC_OK);
     }
     
     
       private void deleteCategoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("Id"));
+         int id = Integer.parseInt(request.getParameter("Id"));
+        
+        categoriaDAO.eliminar(id);
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "DELETE FROM categoria WHERE Id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-
-            int rowsDeleted = statement.executeUpdate();
-            if (rowsDeleted > 0) {
-                response.setStatus(HttpServletResponse.SC_OK);
-            } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException("Error en la base de datos", e);
-        }
+        response.setStatus(HttpServletResponse.SC_OK);
     }
     
     

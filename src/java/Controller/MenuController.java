@@ -4,15 +4,22 @@
  */
 package Controller;
 
+import DAO.MenuDAO;
 import Data.DatabaseConnection;
+import Models.Platillo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +31,8 @@ import org.json.JSONObject;
 
 @WebServlet("/gestionarMenu")
 public class MenuController extends HttpServlet {
+    
+      private MenuDAO menuDAO = new MenuDAO();
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringBuilder sb = new StringBuilder();
@@ -104,5 +113,40 @@ public class MenuController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al guardar el menú");
         }
     }
+   
+   
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+          String fechaStr = request.getParameter("fecha");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    
+    try {
+        java.util.Date fechaUtil = sdf.parse(fechaStr);
+        java.sql.Date fechaSql = new java.sql.Date(fechaUtil.getTime());
+        List<Platillo> platillos = menuDAO.getPlatillosPorFecha(fechaSql);
+        
+        // Configurar la respuesta
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+        JSONArray jsonArray = new JSONArray();
+
+        for (Platillo platillo : platillos) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", platillo.getId());
+            jsonObject.put("nombre", platillo.getNombre());
+            jsonObject.put("precioUnitario", platillo.getPrecioUnitario());
+            jsonObject.put("imagenUrl", platillo.getImagenUrl());
+            jsonArray.put(jsonObject);
+        }
+
+        out.print(jsonArray.toString());
+        out.flush();
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+    }
+   
 
 }

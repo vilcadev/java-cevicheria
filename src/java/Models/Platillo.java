@@ -15,6 +15,7 @@ public class Platillo {
     private String nombre;
     private String imagenUrl;
     private String nombreCategoria;
+    private double precioUnitario;
 
     // Getters y Setters
     public int getId() {
@@ -55,6 +56,15 @@ public class Platillo {
 
     public void setNombreCategoria(String nombreCategoria) {
         this.nombreCategoria = nombreCategoria;
+    }
+    
+    
+     public double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(double precioUnitario) {
+        this.precioUnitario = precioUnitario;
     }
     
 }

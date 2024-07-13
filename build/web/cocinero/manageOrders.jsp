@@ -1,9 +1,3 @@
-<%-- 
-    Document   : manageOrders
-    Created on : 26 jun. 2024, 00:26:38
-    Author     : user
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -44,46 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1234</td>
-                    <td class="estado-recibido">Recibido</td>
-                    <td>14:30</td>
-                    <td>
-                        <button class="btn btn-primary terminar-orden-btn" data-toggle="modal" data-target="#detalleOrdenModal">Terminar Orden</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>5678</td>
-                    <td class="estado-preparacion">En preparación</td>
-                    <td>15:15</td>
-                    <td>
-                        <button class="btn btn-primary terminar-orden-btn" data-toggle="modal" data-target="#detalleOrdenModal">Terminar Orden</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>9012</td>
-                    <td class="estado-preparacion">En preparación</td>
-                    <td>16:00</td>
-                    <td>
-                        <button class="btn btn-primary terminar-orden-btn" data-toggle="modal" data-target="#detalleOrdenModal">Terminar Orden</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3456</td>
-                    <td class="estado-recibido">Recibido</td>
-                    <td>16:45</td>
-                    <td>
-                        <button class="btn btn-primary terminar-orden-btn" data-toggle="modal" data-target="#detalleOrdenModal">Terminar Orden</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>7890</td>
-                    <td class="estado-recibido">Recibido</td>
-                    <td>17:00</td>
-                    <td>
-                        <button class="btn btn-primary terminar-orden-btn" data-toggle="modal" data-target="#detalleOrdenModal">Terminar Orden</button>
-                    </td>
-                </tr>
+                <!-- Las filas se cargarán dinámicamente con AJAX -->
             </tbody>
         </table>
     </div>
@@ -118,8 +73,31 @@
 
     <script>
         $(document).ready(function() {
-            $('.terminar-orden-btn').click(function() {
-                // Example data for modal
+            function loadOrders() {
+                $.ajax({
+                    url: 'loadOrders',
+                    method: 'GET',
+                    success: function(data) {
+                        var rows = '';
+                        data.forEach(function(order) {
+                            rows += '<tr>' +
+                                        '<td>' + order.id + '</td>' +
+                                        '<td class="' + (order.status === 'Recibido' ? 'estado-recibido' : 'estado-preparacion') + '">' + order.status + '</td>' +
+                                        '<td>' + order.orderTime + '</td>' +
+                                        '<td><button class="btn btn-primary terminar-orden-btn" data-toggle="modal" data-target="#detalleOrdenModal">Terminar Orden</button></td>' +
+                                    '</tr>';
+                        });
+                        $('#ordenesTable tbody').html(rows);
+                    },
+                    error: function() {
+                        alert('Error loading orders');
+                    }
+                });
+            }
+
+            loadOrders();
+
+            $(document).on('click', '.terminar-orden-btn', function() {
                 var nroOrden = $(this).closest('tr').find('td:first').text();
                 var estado = $(this).closest('tr').find('td:nth-child(2)').text();
                 var horaPedido = $(this).closest('tr').find('td:nth-child(3)').text();
@@ -132,4 +110,3 @@
     </script>
 </body>
 </html>
-

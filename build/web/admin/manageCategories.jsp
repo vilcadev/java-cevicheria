@@ -325,7 +325,7 @@
         // Cargar los platillos cuando se carga la página
         loadCategorias();
 
-        // Agregar Platillo
+        // Agregar Categoria
         $('#addCategoriaBtn').click(function() {
             var formData = $('#addCategoriaForm').serialize();
             formData += '&action=create';

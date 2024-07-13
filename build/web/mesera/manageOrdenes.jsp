@@ -12,6 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cevicheria La Chinita</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/6c5d2463b9.js" crossorigin="anonymous"></script>
      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -190,7 +192,7 @@
                 
                 <h2> <a href="#"><i class="fa-regular fa-circle-left" style="color: #5443eb;"></i></a> Mesa 1</h2>
                 <div class="table-responsive">
-                    <table class="table">
+                    <table id="tablaPlatillos" class="table">
                         <thead>
                             <tr>
                                 <th>Nombre</th>
@@ -200,24 +202,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Aquí van los elementos de la tabla -->
-                            <tr>
-                                <td>Ceviche</td>
-                                <td>1</td>
-                                <td>25.00</td>
-                                <td>
-                                    <a href="#"><i class="fa-solid fa-trash" style="margin-right: 20px; color: red;"> </i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Chaufa de mariscos</td>
-                                <td>2</td>
-                                <td>25.00</td>
-                                <td>
-                                    <a href="#"><i class="fa-solid fa-trash" style="margin-right: 20px; color: red;"> </i></a>
-                                </td>
-                            </tr>
-                            
+                                                  
                         </tbody>
                     </table>
                 </div>
@@ -277,23 +262,14 @@
                                 <input type="date" id="fecha" class="form-control">
                         </div>
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button">
+                            <button id="cargarMenuButton" class="btn btn-outline-secondary" type="button">
                                 <i class="fas fa-sync-alt"></i>
                             </button>
                         </div>
                     </div>
                     <div>
-                        <div class="menu">
-                            <div class="item">
-                                <div class="price">S/ 25</div>
-                                <img src="https://www.elespectador.com/resizer/tyGJPN_YmWpagQFeXq_YYOxAKjY=/arc-anglerfish-arc2-prod-elespectador/public/2AVD5Z6Y2ZFWHETPQGCPLMNK4A.jpg" alt="ceviche">
-                                <div class="name">ceviche</div>
-                            </div>
-                            <div class="item">
-                                <div class="price">S/ 25</div>
-                                <img src="https://buenazo.cronosmedia.glr.pe/original/2021/09/16/6143e231d4bfcf3c4448e32e.jpg" alt="arroz chaufa">
-                                <div class="name">Chaufa de mariscos</div>
-                            </div>
+                        <div class="menu" id="menuContainer">
+                           
                         </div>
                     </div>
                 </div>
@@ -314,7 +290,7 @@
                         </div>
                         <input type="text" class="form-control" placeholder="Enviar a..." aria-label="Enviar a">
                     </div>
-                    <label for="boleta">Boleta</label>
+                    <label for="boleta">Pagos</label>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <input type="text" class="form-control" placeholder="Cliente" aria-label="Cliente">
@@ -325,7 +301,7 @@
                     </div>
                     <div class="form-group">
                         <label for="total">Total</label>
-                        <p style="text-align: right;"><b>Total: S/50.00</b></p>
+                        <p style="text-align: right;"><b></b></p>
                     </div>
                     <button class="btn btn-danger btn-block">Finalizar</button>
                 </div>
@@ -337,9 +313,107 @@
         </div>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var platillos = [];
+
+     
+
+       // Función para cargar platillos desde el servidor
+        function loadMenu(fecha) {
+            $.ajax({
+                url: '../gestionarMenu',
+                method: 'GET',
+                data: { fecha: fecha },
+                dataType: 'json',
+                success: function(data) {
+                    platillos = data;
+                    showPage(); // Esta función debería actualizar la página con los datos de los platillos
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar los platillos:', error);
+                }
+            });
+        }
+        
+                $(document).ready(function() {
+            $('#cargarMenuButton').on('click', function() {
+                var fecha = $('#fecha').val();
+                if (fecha) {
+                    loadMenu(fecha);
+                } else {
+                    alert('Por favor, seleccione una fecha.');
+                }
+            });
+        });
+
+
+
+           function showPage() {
+        var menuContainer = $('#menuContainer');
+        menuContainer.empty();
+
+        $.each(platillos, function(index, platillo) {
+            console.log(platillo);
+             if (!platillo.precioUnitario || !platillo.imagenUrl || !platillo.nombre) {
+            console.warn('Propiedad faltante en platillo:', platillo);
+        }
+         var item = $('<div class="item">');
+        item.append('<div class="price">S/ ' + platillo.precioUnitario + '</div>');
+        item.append('<img src="' + platillo.imagenUrl + '" alt="' + platillo.nombre + '">');
+        item.append('<div class="name">' + platillo.nombre + '</div>');
+
+        // Añadir evento de clic al div item
+         item.click(function() {
+             agregarPlatillo(platillo);
+         });
+        menuContainer.append(item);
+        });
+    }
+    
+    
+    
+    
+        // Función para agregar platillo a la tabla
+        function agregarPlatillo(platillo) {
+            var tablaPlatillos = $('#tablaPlatillos');
+            var encontrado = false;
+
+            // Recorrer las filas existentes para verificar si ya existe el platillo
+            tablaPlatillos.find('tbody tr').each(function() {
+                var nombrePlatillo = $(this).find('td:eq(0)').text().trim();
+                if (nombrePlatillo === platillo.nombre) {
+                    var cantidad = parseInt($(this).find('td:eq(1)').text().trim()) + 1;
+                    $(this).find('td:eq(1)').text(cantidad);
+                    encontrado = true;
+                    return false; // Terminar el bucle si ya se encontró el platillo
+                }
+            });
+
+            if (!encontrado) {
+                // Si el platillo no existe en la tabla, agregar una nueva fila
+                var nuevaFila = $('<tr>');
+                nuevaFila.append('<td>' + platillo.nombre + '</td>');
+                nuevaFila.append('<td>1</td>'); // Iniciar cantidad en 1
+                nuevaFila.append('<td>' + platillo.precioUnitario.toFixed(2) + '</td>'); // Formatear precio
+                nuevaFila.append('<td><a href="#" class="eliminarPlatillo"><i class="fa-solid fa-trash" style="margin-right: 20px; color: red;"></i></a></td>');
+                tablaPlatillos.find('tbody').append(nuevaFila);
+            }
+            var cantidad = parseInt($(this).find('td:eq(1)').text().trim()) + 1;
+$(this).find('td:eq(1)').text(cantidad);
+
+  // Agregar evento para eliminar platillo
+    tablaPlatillos.find('.eliminarPlatillo').off('click').on('click', function(e) {
+        e.preventDefault();
+        $(this).closest('tr').remove();
+    });
+        }
+    
+    });
+</script>
 
     <script>
         function toggleSidebar() {

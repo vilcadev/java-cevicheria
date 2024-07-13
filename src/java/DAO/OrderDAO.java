@@ -2,20 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Interfaces;
-
-import java.util.LinkedList;
-
+package DAO;
+import Interfaces.CRUD;
+import Models.Orden;
 /**
  *
  * @author user
  */
-public interface CRUD<T> {
+public interface OrderDAO extends CRUD<Orden> {
     
-    void limpiar(); 
-    T ver(int id);
-    LinkedList<T> listar();
-    void crear(T obj);
-    void eliminar(int id);
-    void editar(T obj);
 }
